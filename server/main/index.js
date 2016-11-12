@@ -15,15 +15,22 @@ const reserved = ['new', 'user', 'css', 'js', 'img']
 
 const dbUrl = url.resolve(Config.get('/db/url'), Config.get('/db/name'))
 
-const newDoc = function (request, reply) {
+const editDoc = function (request, reply) {
   if (reserved.indexOf(request.payload.id) !== -1) { return reply.forbidden('The provided field "id" is unacceptable.', { reserved: reserved }) }
   request.payload._id = request.payload.id
   delete request.payload.id
+
+  if (request.payload.rev) {
+    request.payload._rev = request.payload.rev
+    delete request.payload.rev
+  }
+
   const db = nano({
     url: dbUrl,
     cookie: request.auth.credentials.cookie
   })
   const insert = pify(db.insert, { multiArgs: true })
+
   insert(request.payload)
     .then((x) => reply.redirect('/' + x[0].id))
     .catch((err) => reply.boom(err.statusCode, err))
@@ -38,13 +45,18 @@ const mapper = (request, callback) => {
 const responder = (err, res, request, reply) => {
   if (err) { return reply(err) } // FIXME: how to test?
   if (res.statusCode >= 400) { return reply(res.statusMessage).code(res.statusCode) }
+  if (request.params.action && request.params.action !== 'edit') { return reply.notFound(request.params.action) }
 
   const go = (err, payload) => {
     if (err) { return reply(err) } // FIXME: how to test?
     let tpl
     let obj
     if (payload._id) {
-      tpl = 'doc'
+      if (request.params.action) {
+        tpl = 'edit-doc'
+      } else {
+        tpl = 'doc'
+      }
       obj = { doc: payload }
     } else if (payload.rows) {
       tpl = 'docs'
@@ -73,9 +85,7 @@ exports.register = (server, options, next) => {
     method: 'GET',
     path: '/new',
     config: {
-      auth: {
-        mode: 'required'
-      },
+      auth: { mode: 'required' },
       handler: { view: 'new-doc' }
     }
   })
@@ -84,22 +94,56 @@ exports.register = (server, options, next) => {
     method: 'POST',
     path: '/new',
     config: {
-      auth: {
-        mode: 'required'
-      },
-      handler: newDoc
+      auth: { mode: 'required' },
+      handler: editDoc
     }
   })
 
   server.route({
     method: 'GET',
-    path: '/{pathy*}',
+    path: '/',
     handler: {
       proxy: {
         passThrough: true,
         mapUri: mapper,
         onResponse: responder
       }
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/{pathy}',
+    handler: {
+      proxy: {
+        passThrough: true,
+        mapUri: mapper,
+        onResponse: responder
+      }
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/{pathy}/{action}',
+    config: {
+      auth: { mode: 'required' },
+      handler: {
+        proxy: {
+          passThrough: true,
+          mapUri: mapper,
+          onResponse: responder
+        }
+      }
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: '/{pathy}/{action}',
+    config: {
+      auth: { mode: 'required' },
+      handler: editDoc
     }
   })
 
