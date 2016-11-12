@@ -1,7 +1,10 @@
 <% if (data.i === undefined) { %>
-<h2><%- data.doc._id %></h2>
+<h2><%- data.doc.title || data.doc._id %></h2>
 <% } else { %>
-<h3>Doc #<%- data.i + 1 %>: <a href="<%- data.doc._id %>"><%- data.doc._id %></a></h3>
+<h3>Doc #<%- data.i + 1 %>: <a href="/<%- data.doc._id %>"><%- data.doc.title || data.doc._id %></a></h3>
+<% } %>
+<% if (data.credentials || data.edit) { %>
+<p><a class="button hollow" href="/<%- data.doc._id %>/edit">edit</a></p>
 <% } %>
 <pre>
 <%= JSON.stringify(data.doc, null, ' ') %>
