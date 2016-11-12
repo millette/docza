@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<%= partials.head(data) %>
+<body>
+<div class="row column">
+<h1><a href=".">Top</a></h1>
+<%= partials.login(data) %>
+<h2>Nouveau document</h2>
+<form method="POST">
+  <input type="text" name="id" placeholder="id" required>
+  <input type="text" name="title" placeholder="titre" required>
+  <textarea rows="9" name="content" placeholder="contenu" required></textarea>
+  <input class="button secondary" type="submit" value="Créer">
+</form>
+</div>
+<%= partials.foot(data) %>

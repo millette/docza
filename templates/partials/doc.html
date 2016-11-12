@@ -1,0 +1,8 @@
+<% if (data.i === undefined) { %>
+<h2><%- data.doc._id %></h2>
+<% } else { %>
+<h3>Doc #<%- data.i + 1 %>: <a href="<%- data.doc._id %>"><%- data.doc._id %></a></h3>
+<% } %>
+<pre>
+<%= JSON.stringify(data.doc, null, ' ') %>
+</pre>

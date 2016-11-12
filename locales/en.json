@@ -1,0 +1,21 @@
+{
+  "Liste %s": "List %s",
+  "Bienvenue à la démonstration hapi/lodash": "Welcome to the hapi/lodash demonstration",
+  "Support multilingue": "Multilingual support",
+  "Exemple": "Example",
+  "%s cheval": {
+    "one": "%s horse",
+    "other": "%s horses"
+  },
+  "%s livre": {
+    "one": "%s book",
+    "other": "%s books"
+  },
+  "en": "English",
+  "Les docs": "The docs",
+  "Super titre pour un super site": "Super title for a super site",
+  "Choisir la langue": "Pick your language",
+  "fr": "Français",
+  "GlassJaw": "GlassJaw",
+  "Nouveau document": "New document"
+}

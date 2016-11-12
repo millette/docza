@@ -1,0 +1,6 @@
+/* global $ */
+
+$(() => {
+  $(document).foundation()
+})
+

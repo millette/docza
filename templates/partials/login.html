@@ -1,0 +1,66 @@
+<% if (data.credentials) { %>
+
+<div class="row collapse">
+  <div class="medium-2 column">
+    <ul class="tabs vertical" data-tabs id="logout-tabs">
+      <li class="tabs-title is-active"><a href="#logout-panel" aria-selected="true">Logout</a></li>
+      <li class="tabs-title"><a href="#delete-panel">Delete</a></li>
+      <li class="tabs-title"><a href="#edit-panel">Edit</a></li>
+      <li class="tabs-title"><a href="#info-panel">Info</a></li>
+    </ul>
+  </div>
+  <div class="medium-10 column">
+    <div class="tabs-content" data-tabs-content="logout-tabs">
+      <form method="post" action="/user/logout" class="tabs-panel is-active" id="logout-panel">
+        <input type="hidden" name="next" value="/<%- data.pathparts.join('/') %>">
+        <input class="button warning" type="submit" value="Logout <%- data.credentials.fullname || data.credentials.name %>">
+      </form>
+      <form method="post" action="/user/delete" class="tabs-panel" id="delete-panel">
+        <input type="hidden" name="next" value="/<%- data.pathparts.join('/') %>">
+        <input class="button alert" type="submit" value="Delete <%- data.credentials.fullname || data.credentials.name %>">
+      </form>
+      <form method="post" action="/user/edit" class="tabs-panel" id="edit-panel">
+        <input type="text" name="name" placeholder="name" required value="<%- data.credentials.name %>" readonly>
+        <input type="password" name="password" placeholder="original password">
+        <input type="password" name="newpassword" placeholder="new password">
+        <input type="password" name="password2" placeholder="repeat password">
+        <input type="text" name="fullname" placeholder="fullname" value="<%- data.credentials.fullname %>">
+        <input type="hidden" name="next" value="/<%- data.pathparts.join('/') %>">
+        <input class="button secondary" type="submit" value="Edit">
+      </form>
+      <div class="tabs-panel" id="info-panel">
+        <pre><%= JSON.stringify(data, null, ' ') %></pre>
+      </div>
+    </div>
+  </div>
+</div>
+<% } else { %>
+<div class="callout primary">
+<div class="row collapse">
+  <div class="medium-2 column">
+    <ul class="tabs vertical" data-tabs id="login-tabs">
+      <li class="tabs-title is-active"><a href="#login-panel" aria-selected="true">Login</a></li>
+      <li class="tabs-title"><a href="#register-panel">Register</a></li>
+    </ul>
+  </div>
+  <div class="medium-10 column">
+    <div class="tabs-content" data-tabs-content="login-tabs">
+      <form method="post" action="/user/login" class="tabs-panel is-active" id="login-panel">
+        <input type="text" name="name" placeholder="name" required>
+        <input type="password" name="password" placeholder="password" required>
+        <input type="hidden" name="next" value="/<%- data.pathparts.join('/') %>">
+        <input class="button secondary" type="submit" value="Login">
+      </form>
+      <form method="post" action="/user/register" class="tabs-panel" id="register-panel">
+        <input type="text" name="name" placeholder="name" required>
+        <input type="password" name="password" placeholder="password" required>
+        <input type="password" name="password2" placeholder="repeat password" required>
+        <input type="text" name="fullname" placeholder="fullname">
+        <input type="hidden" name="next" value="/<%- data.pathparts.join('/') %>">
+        <input class="button secondary" type="submit" value="Register">
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<% } %>

@@ -1,0 +1,17 @@
+a:hover
+{ text-decoration: underline; }
+
+.icon
+{ font-size: 1.3em; }
+
+body
+{ font-family: "arial, serif"; }
+
+.headline
+{ font-family: "charter, sans-serif"; font-size: 1.3em; }
+
+#page-main-title
+{ font-family: "lucidabright, arial black, cursive"; font-size: 2.0em; }
+
+.larger-text
+{ font-size: 1.2em; }
