@@ -114,7 +114,7 @@ const register = function (request, reply) {
 exports.register = (server, options, next) => {
   server.ext('onPreResponse', (request, reply) => {
     if (request.response.variety === 'view') {
-      request.response.source.context.pathparts = request.url.pathname.split('/').slice(1)
+      request.response.source.context.pathparts = request.path.split('/').slice(1)
     }
     return reply.continue()
   })
