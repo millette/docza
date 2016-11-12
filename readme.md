@@ -2,8 +2,8 @@
 
 Install it:
 ```
-git clone https://github.com/millette/glassjaw.git
-cd glassjaw
+git clone https://github.com/millette/docza.git
+cd docza
 ```
 
 Install CouchDB:
@@ -21,11 +21,15 @@ sudo apt-get install -y libmozjs185-dev
 ```
 
 Le paquet ```libmozjs185``` n'existe pas, il s'agit de ```libmozjs185-1.0```
-et comme ```libmozjs185-dev``` en dépend, il n'est pas nécessaire de l'ajouter manuellement.
+et comme ```libmozjs185-dev``` en dépend, il n'est pas nécessaire de
+l'ajouter manuellement.
+
+La version Debian Stable de Erlang fonctionne bien, pas besoin d'installer une
+autre source de paquets.
 
 Install redis server:
 ```
-aptitude install -t jessie-backports redis-server
+sudo aptitude install -t jessie-backports redis-server
 ```
 
 Version 3.2.5 with jessie-backports; 2.8.17 with jessie.
@@ -39,6 +43,18 @@ redis-cli monitor
 
 CTRL-C when you're satisfied it works.
 
+Install NodeJS and n, the node version manager:
+```
+curl -L https://git.io/n-install | bash
+```
+
+This will install node 7.0 (stable) for your user. We're currently
+using node 4.x, but node 6 (lts) and 7 should also work, so
+
+```
+n lts # installs version 6.9.1 and switch to that version
+n 4.6.2 # install and switch to node 4.6.2
+```
 
 If you don't already have it, install yarn, an npm alternative:
 ```
@@ -69,7 +85,7 @@ yarn start
 
 Launch the browser:
 ```
-firefox http://localhost:8090/
+firefox http://localhost:8099/
 ```
 
 What other scripts are available?
