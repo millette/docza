@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+<%= partials.head(data) %>
+<body>
+<div class="row column">
+<h1><a href="/">Top</a></h1>
+<h2>Edit</h2>
+<%= partials['doc-form'](data) %>
+<pre><%= JSON.stringify(data, null, '  ') %></pre>
+<%= partials.login(data) %>
+</div>
+<%= partials.foot(data) %>
