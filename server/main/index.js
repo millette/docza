@@ -13,12 +13,14 @@ const url = require('url')
 
 const reserved = ['new', 'user', 'css', 'js', 'img']
 
+const dbUrl = url.resolve(Config.get('/db/url'), Config.get('/db/name'))
+
 const newDoc = function (request, reply) {
-  if (reserved.indexOf(request.payload.id) !== -1) { return reply.notAcceptable('The provided field "id" is unacceptable.', { reserved: reserved }) }
+  if (reserved.indexOf(request.payload.id) !== -1) { return reply.forbidden('The provided field "id" is unacceptable.', { reserved: reserved }) }
   request.payload._id = request.payload.id
   delete request.payload.id
   const db = nano({
-    url: url.resolve(Config.get('/db/url'), Config.get('/db/name')),
+    url: dbUrl,
     cookie: request.auth.credentials.cookie
   })
   const insert = pify(db.insert, { multiArgs: true })
@@ -28,7 +30,7 @@ const newDoc = function (request, reply) {
 }
 
 const mapper = (request, callback) => {
-  const it = [Config.get('/db/url'), Config.get('/db/name')]
+  const it = [dbUrl]
   it.push(request.params.pathy ? request.params.pathy : '_all_docs')
   callback(null, it.join('/') + '?include_docs=true', { accept: 'application/json' })
 }
