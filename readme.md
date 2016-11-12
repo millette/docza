@@ -99,3 +99,38 @@ To run all tests, linters, etc.
 ```
 yarn run test
 ```
+
+### Project structure
+```
+docza
+├── assets
+│   ├── css
+│   ├── img
+│   └── js
+│       └── vendor
+├── plugins
+│   └── login
+├── server
+│   ├── main
+│   └── web
+├── templates
+│   └── partials
+└── test
+    ├── plugins
+    │   └── login
+    └── server
+        └── web
+```
+
+Static files (css, images and client JavaScript) go under assets in
+their respective directories.
+
+Custom plugins (only login for now) go in plugins.
+
+Main files (routes, etc.) go in server subdirectories. server/web holds
+the routes to the static files. server/main is where most of the application happens.
+
+Direct templates go in templates and bits of templates (chunks, blocks, partials)
+go in partials.
+
+Finally, all the unit tests are in subdirectories reflecting the main directory structure.
