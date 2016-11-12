@@ -5,11 +5,13 @@
 <div class="row column">
 <h1>Top</h1>
 <h2>Les docs</h2>
-<% if (data.credentials && data.credentials.name) { %>
+<%
+  const edit = data.credentials && true
+  if (edit) { %>
 <p><a class="button hollow" href="new">Créer un document</a></p>
 <% } %>
 <% _(data.docs).each((doc, i) => { %>
-<%= partials.doc({ doc: doc, i: i }) %>
+<%= partials.doc({ edit: edit, doc: doc, i: i }) %>
 <% }) %>
 <%= partials.login(data) %>
 </div>
