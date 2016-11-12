@@ -4,13 +4,6 @@ const Wreck = require('wreck')
 const Config = require('../../config')
 
 exports.register = (server, options, next) => {
-  server.ext('onPreResponse', (request, reply) => {
-    if (request.response.variety === 'view') {
-      request.response.source.context.pathparts = request.url.pathname.split('/')
-    }
-    return reply.continue()
-  })
-
   server.views({
     engines: { html: require('lodash-vision') },
     path: 'templates',
@@ -45,7 +38,10 @@ exports.register = (server, options, next) => {
       } else {
         return reply.notImplemented('What\'s that?', payload)
       }
-      reply.view(tpl, obj).etag(res.headers.etag)
+      const etag = request.auth.credentials && request.auth.credentials.name
+        ? ('"' + res.headers.etag.slice(1, -1) + ':' + request.auth.credentials.name + '"')
+        : res.headers.etag
+      reply.view(tpl, obj).etag(etag)
     }
 
     if (err) { return reply(err) } // FIXME: how to test?

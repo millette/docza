@@ -112,6 +112,13 @@ const register = function (request, reply) {
 }
 
 exports.register = (server, options, next) => {
+  server.ext('onPreResponse', (request, reply) => {
+    if (request.response.variety === 'view') {
+      request.response.source.context.pathparts = request.url.pathname.split('/').slice(1)
+    }
+    return reply.continue()
+  })
+
   server.register(exports.register.attributes.dependencies.map((dep) => require(dep)), (err) => {
     if (err) { throw err }
     const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 })
