@@ -7,8 +7,6 @@ const Hapi = require('hapi')
 const Vision = require('vision')
 const Inert = require('inert')
 const I18N = require('hapi-i18n')
-// const AuthCookie = require('hapi-auth-cookie')
-const PickLanguage = require('../../../plugins/pick-language/index')
 const ContextApp = require('hapi-context-app')
 const HomePlugin = require('../../../server/web/index')
 const LoginPlugin = require('../../../plugins/login/index')
@@ -18,7 +16,7 @@ let request
 let server
 
 lab.beforeEach((done) => {
-  const plugins = [ContextApp, Inert, PickLanguage, Vision, HomePlugin]
+  const plugins = [ContextApp, Inert, Vision, HomePlugin]
   server = new Hapi.Server()
   server.connection({ port: Config.get('/port/web') })
   server.settings.app = {
