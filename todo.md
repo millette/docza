@@ -3,14 +3,7 @@
 ## Next
 * Translations interface
 
-
 ## Details
-### JSON content
-* Dangling commas
-* Cache contents (linked, how?)
-* Updates?
-* Import into CouchDB
-
 ### Site Structure (routes)
 * Main pages (about, faq, etc.)
 * Sections
