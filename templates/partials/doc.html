@@ -3,9 +3,14 @@
 <% } else { %>
 <h3>Doc #<%- data.i + 1 %>: <a href="/<%- data.doc._id %>"><%- data.doc.title || data.doc._id %></a></h3>
 <% } %>
+<% if (data.doc.content) { %>
+  <%= data.doc.content %>
+<% } %>
 <% if (data.credentials || data.edit) { %>
 <p><a class="button hollow" href="/<%- data.doc._id %>/edit">edit</a></p>
 <% } %>
-<pre>
-<%= JSON.stringify(data.doc, null, ' ') %>
-</pre>
+<% if (data.i === undefined) { %>
+<small><pre>
+<%- JSON.stringify(data.doc, null, ' ') %>
+</pre></small>
+<% } %>
