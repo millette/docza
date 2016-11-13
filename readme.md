@@ -100,6 +100,11 @@ To run all tests, linters, etc.
 yarn run test
 ```
 
+### Web dependencies
+Uses [Foundation][] for its css.
+
+Uses [medium-editor][] for the wysiwyg editor.
+
 ### Project structure
 ```
 docza
@@ -134,3 +139,6 @@ Direct templates go in templates and bits of templates (chunks, blocks, partials
 go in partials.
 
 Finally, all the unit tests are in subdirectories reflecting the main directory structure.
+
+[Foundation]: <http://foundation.zurb.com/sites/docs/>
+[medium-editor]: <https://github.com/yabwe/medium-editor>
