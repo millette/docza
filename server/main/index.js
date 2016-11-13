@@ -146,7 +146,12 @@ exports.register = (server, options, next) => {
     path: '/new',
     config: {
       auth: { mode: 'required' },
-      handler: { view: 'new-doc' }
+      handler: {
+        view: {
+          template: 'new-doc',
+          context: { doc: { _attachments: [] } }
+        }
+      }
     }
   })
 
