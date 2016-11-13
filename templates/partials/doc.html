@@ -18,4 +18,10 @@
 <% } else if (data.doc._attachments['top-image.png']) { %>
   <img src="/<%- data.doc._id %>/top-image.png">
 <% } %>
+<% } else { %>
+<% if (data.doc._attachments['top-image-1.jpeg']) { %>
+  <img src="/<%- data.doc._id %>/top-image-1.jpeg">
+<% } else if (data.doc._attachments['top-image-1.png']) { %>
+  <img src="/<%- data.doc._id %>/top-image-1.png">
+<% } %>
 <% } %>

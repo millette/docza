@@ -40,6 +40,7 @@ const responder = (err, res, request, reply) => {
       } else {
         tpl = 'doc'
       }
+      if (!payload._attachments) { payload._attachments = [] }
       obj = { doc: payload }
     } else if (payload.rows) {
       tpl = 'docs'
@@ -48,6 +49,7 @@ const responder = (err, res, request, reply) => {
           if (d.doc.content) {
             d.doc.content = truncate(d.doc.content, Config.get('/teaser/length'))
           }
+          if (!d.doc._attachments) { d.doc._attachments = [] }
           return d.doc
         })
       }
