@@ -1,0 +1,7 @@
+label.file > img {
+  margin: 1em 0;
+}
+
+label.file > input[type="file"] {
+  display: none;
+}
