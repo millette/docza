@@ -18,6 +18,7 @@ const config = {
     password: 'password-should-be-32-characters',
     secure: defFalse
   },
+  teaser: { length: 1000 },
   cache: { web: defFalse },
   port: {
     web: {

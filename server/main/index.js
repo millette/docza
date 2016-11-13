@@ -7,6 +7,7 @@ const Config = require('../../config')
 const Wreck = require('wreck')
 const nano = require('cloudant-nano')
 const pify = require('pify')
+const truncate = require('html-truncate')
 
 // core
 const url = require('url')
@@ -60,7 +61,14 @@ const responder = (err, res, request, reply) => {
       obj = { doc: payload }
     } else if (payload.rows) {
       tpl = 'docs'
-      obj = { docs: payload.rows.map((d) => d.doc) }
+      obj = {
+        docs: payload.rows.map((d) => {
+          if (d.doc.content) {
+            d.doc.content = truncate(d.doc.content, Config.get('/teaser/length'))
+          }
+          return d.doc
+        })
+      }
     } else {
       return reply.notImplemented('What\'s that?', payload)
     }
