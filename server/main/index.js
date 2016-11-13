@@ -23,19 +23,7 @@ const mapper = (request, callback) => {
   callback(null, it.join('/') + '?include_docs=true', { accept: 'application/json' })
 }
 
-const mapperJpeg = (request, callback) => {
-  const it = [dbUrl]
-  it.push(request.params.pathy)
-  it.push('top-image.jpeg')
-  callback(null, it.join('/'))
-}
-
-const mapperPng = (request, callback) => {
-  const it = [dbUrl]
-  it.push(request.params.pathy)
-  it.push('top-image.png')
-  callback(null, it.join('/'))
-}
+const mapperImg = (request, callback) => callback(null, dbUrl + request.path)
 
 const responder = (err, res, request, reply) => {
   if (err) { return reply(err) } // FIXME: how to test?
@@ -87,6 +75,8 @@ const getDoc = function (request, reply) {
     .catch(reply)
 }
 
+const resize = (image, width, height) => sharp(image).resize(width, height).max().toBuffer()
+
 const editDoc = function (request, reply) {
   if (reserved.indexOf(request.payload.id) !== -1) { return reply.forbidden('The provided field "id" is unacceptable.', { reserved: reserved }) }
   request.payload._id = request.payload.id
@@ -97,15 +87,7 @@ const editDoc = function (request, reply) {
     delete request.payload.rev
   }
 
-  if (request.pre && request.pre.m1 && request.pre.m1._attachments) {
-    request.payload._attachments = request.pre.m1._attachments
-  }
-
-  const db = nano({
-    url: dbUrl,
-    cookie: request.auth.credentials.cookie
-  })
-
+  const db = nano({ url: dbUrl, cookie: request.auth.credentials.cookie })
   const insert = pify(
     (request.payload.jpeg && request.payload.jpeg.length)
       ? db.multipart.insert
@@ -115,17 +97,32 @@ const editDoc = function (request, reply) {
 
   let p
   if (request.payload.jpeg && request.payload.jpeg.length) {
-    const imgData = Buffer.from(request.payload.jpeg)
-    delete request.payload.jpeg
+    p = sharp(request.payload.jpeg).metadata()
+      .then((m) => Promise.all([
+        request.payload.jpeg,
+        resize(request.payload.jpeg, 160, 90),
+        resize(request.payload.jpeg, 320, 180),
+        resize(request.payload.jpeg, 800, 450),
+        resize(request.payload.jpeg, 1280, 720),
+        m.format
+      ]))
+      .then((stuff) => {
+        const format = stuff.pop()
+        delete request.payload.jpeg
 
-    p = sharp(imgData).metadata()
-      .then((m) => [{
-          name: 'top-image.' + m.format,
-          data: imgData,
-          content_type: 'image/' + m.format
-      }])
+        return stuff.map((im, n) => {
+          return {
+            name: `top-image${n ? ('-' + n) : ''}.${format}`,
+            data: im,
+            content_type: 'image/' + format
+          }
+        })
+      })
       .then((atts) => insert(request.payload, atts, request.payload._id))
   } else {
+    if (request.pre && request.pre.m1 && request.pre.m1._attachments) {
+      request.payload._attachments = request.pre.m1._attachments
+    }
     delete request.payload.jpeg
     p = insert(request.payload)
   }
@@ -184,6 +181,35 @@ exports.register = (server, options, next) => {
     }
   })
 
+  let r
+  for (r = 1; r < 5; ++r) {
+    server.route({
+      method: 'GET',
+      path: `/{pathy}/top-image-${r}.jpeg`,
+      config: {
+        handler: {
+          proxy: {
+            passThrough: true,
+            mapUri: mapperImg
+          }
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: `/{pathy}/top-image-${r}.png`,
+      config: {
+        handler: {
+          proxy: {
+            passThrough: true,
+            mapUri: mapperImg
+          }
+        }
+      }
+    })
+  }
+
   server.route({
     method: 'GET',
     path: '/{pathy}/top-image.jpeg',
@@ -191,7 +217,7 @@ exports.register = (server, options, next) => {
       handler: {
         proxy: {
           passThrough: true,
-          mapUri: mapperJpeg
+          mapUri: mapperImg
         }
       }
     }
@@ -204,7 +230,7 @@ exports.register = (server, options, next) => {
       handler: {
         proxy: {
           passThrough: true,
-          mapUri: mapperPng
+          mapUri: mapperImg
         }
       }
     }
