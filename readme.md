@@ -105,6 +105,10 @@ Uses [Foundation][] for its css.
 
 Uses [medium-editor][] for the wysiwyg editor.
 
+### Server dependencies
+* [HapiJS][] (instead of express or koa)
+* [sharp][] (instead of ImageMagick)
+
 ### Project structure
 ```
 docza
@@ -142,3 +146,5 @@ Finally, all the unit tests are in subdirectories reflecting the main directory 
 
 [Foundation]: <http://foundation.zurb.com/sites/docs/>
 [medium-editor]: <https://github.com/yabwe/medium-editor>
+[sharp]: <http://sharp.dimens.io/en/stable/api/>
+[HapiJS]: <http://hapijs.com/>
