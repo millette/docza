@@ -1,7 +1,7 @@
 # TODO
 
 ## Next
-* Translations interface
+* Upload images (attach to docs)
 
 ## Details
 ### Site Structure (routes)
