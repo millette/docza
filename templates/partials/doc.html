@@ -13,4 +13,9 @@
 <small><pre>
 <%- JSON.stringify(data.doc, null, ' ') %>
 </pre></small>
+<% if (data.doc._attachments['top-image.jpeg']) { %>
+  <img src="/<%- data.doc._id %>/top-image.jpeg">
+<% } else if (data.doc._attachments['top-image.png']) { %>
+  <img src="/<%- data.doc._id %>/top-image.png">
+<% } %>
 <% } %>

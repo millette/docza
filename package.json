@@ -39,6 +39,7 @@
     "lodash": "^4.16.6",
     "lodash-vision": "^0.0.1",
     "pify": "^2.3.0",
+    "sharp": "^0.16.2",
     "vision": "4.x.x",
     "wreck": "^10.0.0"
   },
