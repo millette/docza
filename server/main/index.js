@@ -9,6 +9,7 @@ const nano = require('cloudant-nano')
 const pify = require('pify')
 const truncate = require('html-truncate')
 const sharp = require('sharp')
+const marked = require('marked')
 
 // core
 const url = require('url')
@@ -39,6 +40,7 @@ const responder = (err, res, request, reply) => {
         tpl = 'edit-doc'
       } else {
         tpl = 'doc'
+        payload.content = marked(payload.content)
       }
       if (!payload._attachments) { payload._attachments = [] }
       obj = { doc: payload }
@@ -47,7 +49,7 @@ const responder = (err, res, request, reply) => {
       obj = {
         docs: payload.rows.map((d) => {
           if (d.doc.content) {
-            d.doc.content = truncate(d.doc.content, Config.get('/teaser/length'), { keepImageTag: true })
+            d.doc.content = marked(truncate(d.doc.content, Config.get('/teaser/length'), { keepImageTag: true }))
           }
           if (!d.doc._attachments) { d.doc._attachments = [] }
           return d.doc

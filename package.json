@@ -38,6 +38,7 @@
     "inert": "^4.0.2",
     "lodash": "^4.16.6",
     "lodash-vision": "^0.0.1",
+    "marked": "^0.3.6",
     "pify": "^2.3.0",
     "sharp": "^0.16.2",
     "vision": "4.x.x",
