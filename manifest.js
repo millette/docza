@@ -43,14 +43,6 @@ const manifest = {
     { plugin: 'vision' },
     { plugin: './server/web/index' },
     { plugin: './server/main/index' }
-/*
-    {
-      plugin: {
-        register: './server/main/index',
-        options: { templateCached: Config.get('/cache/web') }
-      }
-    }
-*/
   ]
 }
 
