@@ -15,6 +15,9 @@ dans Futon (interface CouchDB).
   <% if (data.doc && data.doc._rev) { %>
   <input type="hidden" name="rev" placeholder="rev" required value="<%- data.doc && data.doc._rev %>">
   <% } %>
+  <input type="text" name="main_image" placeholder="Image Principale" required value="<%- data.doc && data.doc.main_image || '' %>">
+  <input type="text" name="menu_image" placeholder="Image du menu" required value="<%- data.doc && data.doc.menu_image || '' %>">
+  <input type="text" name="menu_title" placeholder="Titre du menu" required value="<%- data.doc && data.doc.menu_title || '' %>">
   <label class="file">
 <% if (data.doc._attachments['top-image-2.jpeg']) { %>
   <img title="Remplacer l'image (jpeg ou png)" src="/<%- data.doc._id %>/top-image-2.jpeg">
