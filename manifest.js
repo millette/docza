@@ -37,7 +37,8 @@ const manifest = {
         options: { path: 'assets/img/favicon.ico' }
       }
     },
-    { plugin: 'hapi-context-app' },
+    // { plugin: 'hapi-error' },
+    // { plugin: 'hapi-context-app' },
     { plugin: 'hapi-context-credentials' },
     { plugin: 'h2o2' },
     { plugin: 'inert' },

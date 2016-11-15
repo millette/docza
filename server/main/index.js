@@ -28,7 +28,7 @@ const mapperImg = (request, callback) => callback(null, dbUrl + request.path)
 
 const responder = (err, res, request, reply) => {
   if (err) { return reply(err) } // FIXME: how to test?
-  if (res.statusCode >= 400) { return reply(res.statusMessage).code(res.statusCode) }
+  if (res.statusCode >= 400) { return reply.boom(res.statusCode, new Error(res.statusMessage)) }
   if (request.params.action && request.params.action !== 'edit') { return reply.notFound(request.params.action) }
 
   const go = (err, payload) => {
@@ -135,13 +135,32 @@ const editDoc = function (request, reply) {
     .catch((err) => reply.boom(err.statusCode, err))
 }
 
+
 exports.register = (server, options, next) => {
+  // server.register([], (err) => {
+    // if (err) { throw err }
+
+/*
+  server.register(exports.register.attributes.dependencies.map((dep) => require(dep)), (err) => {
+    if (err) { throw err }
+
+    server.views({
+      engines: { html: require('lodash-vision') },
+      path: 'templates',
+      partialsPath: 'templates/partials',
+      isCached: options.templateCached
+    })
+   })
+*/
+
+/*
   server.views({
     engines: { html: require('lodash-vision') },
     path: 'templates',
     partialsPath: 'templates/partials',
     isCached: options.templateCached
   })
+*/
 
   server.route({
     method: 'GET',
@@ -274,6 +293,10 @@ exports.register = (server, options, next) => {
 }
 
 exports.register.attributes = {
-  name: 'main',
-  dependencies: ['hapi-context-app', 'h2o2', 'vision']
+  dependencies: ['h2o2'],
+  // dependencies: ['hapi-error', 'vision', 'hapi-context-app', 'h2o2'],
+  // dependencies: ['hapi-error', 'vision'],
+  // dependencies: ['hapi-error', 'vision'],
+  // dependencies: ['vision'],
+  name: 'main'
 }
