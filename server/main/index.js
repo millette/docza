@@ -137,31 +137,6 @@ const editDoc = function (request, reply) {
 
 
 exports.register = (server, options, next) => {
-  // server.register([], (err) => {
-    // if (err) { throw err }
-
-/*
-  server.register(exports.register.attributes.dependencies.map((dep) => require(dep)), (err) => {
-    if (err) { throw err }
-
-    server.views({
-      engines: { html: require('lodash-vision') },
-      path: 'templates',
-      partialsPath: 'templates/partials',
-      isCached: options.templateCached
-    })
-   })
-*/
-
-/*
-  server.views({
-    engines: { html: require('lodash-vision') },
-    path: 'templates',
-    partialsPath: 'templates/partials',
-    isCached: options.templateCached
-  })
-*/
-
   server.route({
     method: 'GET',
     path: '/new',
@@ -294,9 +269,5 @@ exports.register = (server, options, next) => {
 
 exports.register.attributes = {
   dependencies: ['h2o2'],
-  // dependencies: ['hapi-error', 'vision', 'hapi-context-app', 'h2o2'],
-  // dependencies: ['hapi-error', 'vision'],
-  // dependencies: ['hapi-error', 'vision'],
-  // dependencies: ['vision'],
   name: 'main'
 }

@@ -37,20 +37,20 @@ const manifest = {
         options: { path: 'assets/img/favicon.ico' }
       }
     },
-    // { plugin: 'hapi-error' },
-    // { plugin: 'hapi-context-app' },
     { plugin: 'hapi-context-credentials' },
     { plugin: 'h2o2' },
     { plugin: 'inert' },
     { plugin: 'vision' },
     { plugin: './server/web/index' },
+    { plugin: './server/main/index' }
+/*
     {
-//      options: { routes: { prefix: '/{languageCode}' } },
       plugin: {
         register: './server/main/index',
         options: { templateCached: Config.get('/cache/web') }
       }
     }
+*/
   ]
 }
 

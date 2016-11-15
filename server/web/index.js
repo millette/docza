@@ -23,7 +23,6 @@ exports.register = function (server, options, next) {
 }
 
 exports.register.attributes = {
-  // dependencies: ['hapi-context-app', 'vision', 'inert'],
   dependencies: ['inert'],
   name: 'web'
 }
