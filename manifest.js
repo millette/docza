@@ -11,12 +11,12 @@ const manifest = {
       siteTitle: Config.get('/app/siteTitle')
     },
     cache: 'catbox-redis',
-    debug: { log: ['error'], request: ['error'] },
+    debug: { log: ['error'] },
     connections: { routes: { security: true } }
   },
   connections: [{
-    port: Config.get('/port/web'),
-    labels: ['web']
+    labels: ['web'],
+    port: Config.get('/port/web')
   }],
   registrations: [
     {
