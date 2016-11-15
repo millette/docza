@@ -12,7 +12,7 @@ const defFalse = {
 const config = {
   $meta: 'This file configures GlassJaw.',
   projectName: 'docza',
-  app: { siteTitle: 'GlassJaw' },
+  app: { siteTitle: 'Pizzaloca' },
   db: { url: 'http://localhost:5984', name: 'pizzaloca' },
   cookie: {
     password: 'password-should-be-32-characters',
