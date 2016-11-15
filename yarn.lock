@@ -1263,6 +1263,12 @@ hapi-context-credentials@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/hapi-context-credentials/-/hapi-context-credentials-2.0.0.tgz#bc0093c128a94ed6a4aac57614eea16065c71224"
 
+hapi-error:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/hapi-error/-/hapi-error-1.5.0.tgz#06c77e3eeaddfb05a31ccf835f08e77b8bb1dbab"
+  dependencies:
+    hoek "^4.1.0"
+
 hapi-favicon:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/hapi-favicon/-/hapi-favicon-1.0.0.tgz#ec901b23beb244c8cbc5084f4c88edac52a637ff"
@@ -1356,6 +1362,10 @@ heavy@4.x.x:
     hoek "4.x.x"
     joi "9.x.x"
 
+hoek@^4.1.0, hoek@4.X.X, hoek@4.x.x:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.1.0.tgz#4a4557460f69842ed463aa00628cc26d2683afa7"
+
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
@@ -1363,10 +1373,6 @@ hoek@2.x.x:
 hoek@3.x.x:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-3.0.4.tgz#268adff66bb6695c69b4789a88b1e0847c3f3123"
-
-hoek@4.x.x, hoek@4.X.X:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.1.0.tgz#4a4557460f69842ed463aa00628cc26d2683afa7"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -1664,7 +1670,7 @@ joi@8.x.x:
     moment "2.x.x"
     topo "2.x.x"
 
-joi@9.x.x, joi@9.X.X:
+joi@9.X.X, joi@9.x.x:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-9.2.0.tgz#3385ac790192130cbe230e802ec02c9215bbfeda"
   dependencies:
