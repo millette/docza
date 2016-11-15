@@ -11,12 +11,12 @@ const manifest = {
       siteTitle: Config.get('/app/siteTitle')
     },
     cache: 'catbox-redis',
-    debug: { log: ['error'], request: ['error'] },
+    debug: { log: ['error'] },
     connections: { routes: { security: true } }
   },
   connections: [{
-    port: Config.get('/port/web'),
-    labels: ['web']
+    labels: ['web'],
+    port: Config.get('/port/web')
   }],
   registrations: [
     {
@@ -37,19 +37,12 @@ const manifest = {
         options: { path: 'assets/img/favicon.ico' }
       }
     },
-    { plugin: 'hapi-context-app' },
     { plugin: 'hapi-context-credentials' },
     { plugin: 'h2o2' },
     { plugin: 'inert' },
     { plugin: 'vision' },
     { plugin: './server/web/index' },
-    {
-//      options: { routes: { prefix: '/{languageCode}' } },
-      plugin: {
-        register: './server/main/index',
-        options: { templateCached: Config.get('/cache/web') }
-      }
-    }
+    { plugin: './server/main/index' }
   ]
 }
 

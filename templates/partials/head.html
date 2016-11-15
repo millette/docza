@@ -3,10 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%- data.app.siteTitle %></title>
+  <title><%- data && data.app && data.app.siteTitle || 'Sans titre' %></title>
   <link rel="stylesheet" media="all" href="/css/foundation.css">
-  <link rel="stylesheet" media="all" href="/css/vendor/medium-editor.min.css">
-  <link rel="stylesheet" media="all" href="/css/vendor/themes/default.min.css">
   <link rel="stylesheet" media="all" href="/css/app.css">
 </head>
 <body>
