@@ -6,7 +6,7 @@
 <p><a class="button hollow" href="new">Créer un document</a></p>
 <% } %>
 <% _(data.docs).each((doc, i) => { %>
-<%= partials.doc({ edit: edit, doc: doc, i: i }) %>
+<%= partials['doc-front']({ edit: edit, doc: doc, i: i }) %>
 <% }) %>
 <%= partials.login(data) %>
 <%= partials.foot(data) %>
