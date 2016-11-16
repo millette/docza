@@ -1,27 +1,10 @@
-<% if (data.i === undefined) { %>
 <h2><%- data.doc.title || data.doc._id %></h2>
-<% } else { %>
-<h3>Doc #<%- data.i + 1 %>: <a href="/<%- data.doc._id %>"><%- data.doc.title || data.doc._id %></a></h3>
-<% } %>
-<% if (data.doc.content) { %>
-  <%= data.doc.content %>
-<% } %>
+<%= data.doc.content %>
 <% if (data.credentials || data.edit) { %>
 <p><a class="button hollow" href="/<%- data.doc._id %>/edit">edit</a></p>
 <% } %>
-<% if (data.i === undefined) { %>
-<small><pre>
-<%- JSON.stringify(data.doc, null, ' ') %>
-</pre></small>
 <% if (data.doc._attachments['top-image.jpeg']) { %>
   <img src="/<%- data.doc._id %>/top-image.jpeg">
 <% } else if (data.doc._attachments['top-image.png']) { %>
   <img src="/<%- data.doc._id %>/top-image.png">
-<% } %>
-<% } else { %>
-<% if (data.doc._attachments['top-image-1.jpeg']) { %>
-  <img src="/<%- data.doc._id %>/top-image-1.jpeg">
-<% } else if (data.doc._attachments['top-image-1.png']) { %>
-  <img src="/<%- data.doc._id %>/top-image-1.png">
-<% } %>
 <% } %>

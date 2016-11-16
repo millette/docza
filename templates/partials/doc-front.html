@@ -1,0 +1,11 @@
+<div class="column medium-4">
+  <a href="/<%- data.doc._id %>">
+  <% if (data.doc._attachments['top-image-3.jpeg']) { %>
+    <img src="/<%- data.doc._id %>/top-image-3.jpeg" alt="<%- data.doc.title || data.doc._id %>">
+  <% } else if (data.doc._attachments['top-image-3.png']) { %>
+    <img src="/<%- data.doc._id %>/top-image-3.png" alt="<%- data.doc.title || data.doc._id %>">
+  <% } else { %>
+    <p>Pas d'image...</p>
+  <% } %>
+  </a>
+</div>

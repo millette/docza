@@ -1,5 +1,7 @@
 'use strict'
 
+require('dotenv-safe').load()
+
 const Confidence = require('confidence')
 const criteria = { env: process.env.NODE_ENV }
 
@@ -12,8 +14,8 @@ const defFalse = {
 const config = {
   $meta: 'This file configures GlassJaw.',
   projectName: 'docza',
-  app: { siteTitle: 'Pizzaloca' },
-  db: { url: 'http://localhost:5984', name: 'pizzaloca' },
+  app: { siteTitle: process.env.SITETITLE },
+  db: { url: process.env.DBURL, name: process.env.DBNAME },
   cookie: {
     password: 'password-should-be-32-characters',
     secure: defFalse

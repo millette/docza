@@ -1,12 +1,8 @@
 <%= partials.head(data) %>
-<h2>Les docs</h2>
-<%
-  const edit = data.credentials && true
-  if (edit) { %>
-<p><a class="button hollow" href="new">Créer un document</a></p>
-<% } %>
+<div class="row collapse">
 <% _(data.docs).each((doc, i) => { %>
-<%= partials.doc({ edit: edit, doc: doc, i: i }) %>
+<%= partials['doc-front']({ edit: data.credentials && true, doc: doc, i: i }) %>
 <% }) %>
+</div>
 <%= partials.login(data) %>
 <%= partials.foot(data) %>
