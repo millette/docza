@@ -1,5 +1,8 @@
 # Readme
 
+ATTENTION: voir la section Database vers la fin de ce document
+pour une mise à jour importante.
+
 Install it:
 ```
 git clone https://github.com/millette/docza.git
@@ -143,6 +146,64 @@ Direct templates go in templates and bits of templates (chunks, blocks, partials
 go in partials.
 
 Finally, all the unit tests are in subdirectories reflecting the main directory structure.
+
+## Database
+
+Il faut maintenant créer le document avec l'id spécial "_design/app".
+Notez qu'il faut être un admin pour gérér les *design docs*.
+Ajoutez ce contenu pour notre index secondaire (le menu):
+
+```
+{
+   "_id": "_design/app",
+   "language": "javascript",
+   "views": {
+       "menu": {
+           "map": "function(doc) {\n  var weight\n  var obj = { path: '/' + doc._id }\n  if (doc.weight) {\n    weight = parseInt(doc.weight, 10)\n  } else {\n    weight = 999\n  }\n  if (doc.menu_title) {\n    obj.title = doc.menu_title\n  } else if (doc.title) {\n    obj.title = doc.title\n  }\n  if (!obj.title) { return }\n  if (doc._attachments) {\n    if (doc._attachments['top-image-1.jpeg']) {\n       obj.img = obj.path + '/top-image-1.jpeg'\n    } else if (doc._attachments['top-image-1.png']) {\n       obj.img = obj.path + '/top-image-1.png'\n    }\n  }\n  emit(weight, obj)\n}"
+       }
+   }
+}
+```
+
+Alternativement, on peut créer le ```view``` dans futon.
+
+Visitez http://localhost:5984/_utils/database.html?pizzaloca/_temp_view
+
+Copiez dans View Code:
+
+```
+function(doc) {
+  var weight
+  var obj = { path: '/' + doc._id }
+  if (doc.weight) {
+    weight = parseInt(doc.weight, 10)
+  } else {
+    weight = 999
+  }
+  if (doc.menu_title) {
+    obj.title = doc.menu_title
+  } else if (doc.title) {
+    obj.title = doc.title
+  }
+  if (!obj.title) { return }
+  if (doc._attachments) {
+    if (doc._attachments['top-image-1.jpeg']) {
+       obj.img = obj.path + '/top-image-1.jpeg'
+    } else if (doc._attachments['top-image-1.png']) {
+       obj.img = obj.path + '/top-image-1.png'
+    }
+  }
+  emit(weight, obj)
+}
+```
+
+Puis Save As:
+
+* Design document: _design/app
+* View name: menu
+
+
+Une prochaine étape gèrera les changements au *design doc* automatiquement.
 
 [Foundation]: <http://foundation.zurb.com/sites/docs/>
 [medium-editor]: <https://github.com/yabwe/medium-editor>

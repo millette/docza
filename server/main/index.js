@@ -16,6 +16,26 @@ const reserved = ['admin', 'new', 'user', 'css', 'js', 'img']
 exports.register = (server, options, next) => {
   const dbUrl = url.resolve(options.db.url, options.db.name)
 
+  const menu = function (request, reply) {
+    // reply(['menu', 'a', 'b', 'c'])
+    const db = nano({
+      url: dbUrl,
+      cookie: request.auth.credentials.cookie
+    })
+
+    const view = pify(db.view, { multiArgs: true })
+    //reply(view('_design/app', 'menu'))
+    view('app', 'menu')
+      .then((x) => {
+        reply(x[0])
+      })
+      .catch((e) => {
+        console.log('EEEEE:', e)
+        reply(e)
+      })
+
+  }
+
   const mapper = (request, callback) => {
     const it = [dbUrl]
     let more
@@ -23,10 +43,13 @@ exports.register = (server, options, next) => {
       it.push(request.params.pathy)
       more = ''
     } else {
-      it.push('_all_docs')
+      // it.push('_all_docs')
+      // more = '?include_docs=true&startkey="_\\ufff0"'
+      it.push('_design/app/_view/menu')
       more = '?include_docs=true'
     }
     const dest = it.join('/') + more
+    console.log('DEST:', dest)
     callback(null, dest, { accept: 'application/json' })
   }
 
@@ -49,7 +72,7 @@ exports.register = (server, options, next) => {
           payload.content = marked(payload.content)
         }
         if (!payload._attachments) { payload._attachments = [] }
-        obj = { doc: payload }
+        obj = { menu: request.pre.menu, doc: payload }
       } else if (payload.rows) {
         if (request.params.pathy) {
           if (request.auth.isAuthenticated) {
@@ -62,6 +85,7 @@ exports.register = (server, options, next) => {
           tpl = 'docs'
         }
         obj = {
+          menu: request.pre.menu,
           docs: payload.rows.map((d) => {
             if (d.doc.content) {
               d.doc.content = marked(truncate(d.doc.content, options.teaser.length, { keepImageTag: true }))
@@ -155,6 +179,7 @@ exports.register = (server, options, next) => {
     path: '/new',
     config: {
       auth: { mode: 'required' },
+      pre: [{ assign: 'menu', method: menu }],
       handler: {
         view: {
           template: 'new-doc',
@@ -176,11 +201,14 @@ exports.register = (server, options, next) => {
   server.route({
     method: 'GET',
     path: '/',
-    handler: {
-      proxy: {
-        passThrough: true,
-        mapUri: mapper,
-        onResponse: responder
+    config: {
+      pre: [{ assign: 'menu', method: menu }],
+      handler: {
+        proxy: {
+          passThrough: true,
+          mapUri: mapper,
+          onResponse: responder
+        }
       }
     }
   })
@@ -188,11 +216,14 @@ exports.register = (server, options, next) => {
   server.route({
     method: 'GET',
     path: '/{pathy}',
-    handler: {
-      proxy: {
-        passThrough: true,
-        mapUri: mapper,
-        onResponse: responder
+    config: {
+      pre: [{ assign: 'menu', method: menu }],
+      handler: {
+        proxy: {
+          passThrough: true,
+          mapUri: mapper,
+          onResponse: responder
+        }
       }
     }
   })
@@ -256,6 +287,7 @@ exports.register = (server, options, next) => {
     method: 'GET',
     path: '/{pathy}/{action}',
     config: {
+      pre: [{ assign: 'menu', method: menu }],
       auth: { mode: 'required' },
       handler: {
         proxy: {
