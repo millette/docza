@@ -117,9 +117,14 @@ Uses [medium-editor][] for the wysiwyg editor.
 docza
 ├── assets
 │   ├── css
+│   │   └── vendor
 │   ├── img
 │   └── js
 │       └── vendor
+├── ddoc
+│   └── app
+│       └── views
+│           └── menu
 ├── plugins
 │   └── login
 ├── server
