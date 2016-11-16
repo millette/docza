@@ -8,5 +8,31 @@
   <link rel="stylesheet" media="all" href="/css/app.css">
 </head>
 <body>
-<div class="row column">
-<h1><a href="/">Accueil</a></h1>
+  <button type="button" class="button" data-toggle="offCanvasLeft">Open Menu</button>
+  <div class="off-canvas-wrapper">
+    <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+      <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
+        <ul class="vertical menu">
+          <% _(data.docs).each((doc) => { %>
+            <li><a href="/<%- doc._id %>"><%- doc.title %></a></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
+        <!-- right off-canvas markup -->
+      </div>
+      <div class="off-canvas-content" data-off-canvas-content>
+        <div class="row column">
+        <% if (data.doc && data.doc.title) { %>
+          <h1><%- data.doc.title %></h1>
+          <nav aria-label="You are here:" role="navigation">
+            <ul class="breadcrumbs">
+              <li><a href="/">Accueil</a></li>
+                <span class="show-for-sr">Current: </span><%- data.doc.title || data.doc._id %>
+              </li>
+            </ul>
+          </nav>
+        <% } else { %>
+          <h1>Accueil</h1>
+        <% } %>
+      
