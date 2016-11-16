@@ -22,6 +22,10 @@ const manifest = {
     {
       plugin: {
         options: {
+          db: {
+            url: Config.get('/db/url'),
+            name: Config.get('/db/name')
+          },
           cookie: {
             password: Config.get('/cookie/password'),
             secure: Config.get('/cookie/secure')
@@ -42,7 +46,20 @@ const manifest = {
     { plugin: 'inert' },
     { plugin: 'vision' },
     { plugin: './server/web/index' },
-    { plugin: './server/main/index' }
+    {
+      plugin: {
+        options: {
+          db: {
+            url: Config.get('/db/url'),
+            name: Config.get('/db/name')
+          },
+          teaser: {
+            length: Config.get('/teaser/length')
+          }
+        },
+        register: './server/main/index'
+      }
+    }
   ]
 }
 

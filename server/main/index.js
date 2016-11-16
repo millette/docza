@@ -1,8 +1,5 @@
 'use strict'
 
-// self
-const Config = require('../../config')
-
 // npm
 const Wreck = require('wreck')
 const nano = require('cloudant-nano')
@@ -16,158 +13,142 @@ const url = require('url')
 
 const reserved = ['admin', 'new', 'user', 'css', 'js', 'img']
 
-const dbUrl = url.resolve(Config.get('/db/url'), Config.get('/db/name'))
-
-const mapper = (request, callback) => {
-  const it = [dbUrl]
-  let more
-  if (request.params.pathy && request.params.pathy !== 'admin' ) {
-    it.push(request.params.pathy)
-    more = ''
-  } else {
-    it.push('_all_docs')
-    more = '?include_docs=true'
-  }
-  const dest = it.join('/') + more
-  callback(null, dest, { accept: 'application/json' })
-}
-
-const mapperImg = (request, callback) => callback(null, dbUrl + request.path)
-
-const responder = (err, res, request, reply) => {
-  if (err) { return reply(err) } // FIXME: how to test?
-  if (res.statusCode >= 400) { return reply.boom(res.statusCode, new Error(res.statusMessage)) }
-  if (request.params.action && request.params.action !== 'edit') { return reply.notFound(request.params.action) }
-
-  const go = (err, payload) => {
-    if (err) { return reply(err) } // FIXME: how to test?
-    let tpl
-    let obj
-    if (payload._id) {
-      if (request.params.action) {
-        tpl = 'edit-doc'
-      } else {
-        tpl = 'doc'
-        payload.content = marked(payload.content)
-      }
-      if (!payload._attachments) { payload._attachments = [] }
-      obj = { doc: payload }
-    } else if (payload.rows) {
-      if (request.params.pathy) {
-        if (!request.auth.isAuthenticated) { return reply.unauthorized() }
-        tpl = 'admin'
-      } else {
-        tpl = 'docs'
-      }
-      obj = {
-        docs: payload.rows.map((d) => {
-          if (d.doc.content) {
-            d.doc.content = marked(truncate(d.doc.content, Config.get('/teaser/length'), { keepImageTag: true }))
-          }
-          if (!d.doc._attachments) { d.doc._attachments = [] }
-          return d.doc
-        })
-      }
-    } else {
-      return reply.notImplemented('What\'s that?', payload)
-    }
-    const etag = request.auth.credentials && request.auth.credentials.name
-      ? ('"' + res.headers.etag.slice(1, -1) + ':' + request.auth.credentials.name + '"')
-      : res.headers.etag
-    reply.view(tpl, obj).etag(etag)
-  }
-
-  Wreck.read(res, { json: true }, go)
-}
-
-const getDoc = function (request, reply) {
-  const db = nano({
-    url: dbUrl,
-    cookie: request.auth.credentials.cookie
-  })
-
-  const get = pify(db.get, { multiArgs: true })
-  get(request.params.pathy)
-    .then((x) => reply(x[0]))
-    .catch(reply)
-}
-
-const resize = (image, width, height) => sharp(image).resize(width, height).max().toBuffer()
-
-const editDoc = function (request, reply) {
-  if (reserved.indexOf(request.payload.id) !== -1) { return reply.forbidden('The provided field "id" is unacceptable.', { reserved: reserved }) }
-  request.payload._id = request.payload.id
-  delete request.payload.id
-
-  if (request.payload.rev) {
-    request.payload._rev = request.payload.rev
-    delete request.payload.rev
-  }
-
-  const db = nano({ url: dbUrl, cookie: request.auth.credentials.cookie })
-  const insert = pify(
-    (request.payload.jpeg && request.payload.jpeg.length)
-      ? db.multipart.insert
-      : db.insert,
-    { multiArgs: true }
-  )
-
-  let p
-  if (request.payload.jpeg && request.payload.jpeg.length) {
-    p = sharp(request.payload.jpeg).metadata()
-      .then((m) => Promise.all([
-        request.payload.jpeg,
-        resize(request.payload.jpeg, 160, 90),
-        resize(request.payload.jpeg, 320, 180),
-        resize(request.payload.jpeg, 800, 450),
-        resize(request.payload.jpeg, 1280, 720),
-        m.format
-      ]))
-      .then((stuff) => {
-        const format = stuff.pop()
-        delete request.payload.jpeg
-
-        return stuff.map((im, n) => {
-          return {
-            name: `top-image${n ? ('-' + n) : ''}.${format}`,
-            data: im,
-            content_type: 'image/' + format
-          }
-        })
-      })
-      .then((atts) => insert(request.payload, atts, request.payload._id))
-  } else {
-    if (request.pre && request.pre.m1 && request.pre.m1._attachments) {
-      request.payload._attachments = request.pre.m1._attachments
-    }
-    delete request.payload.jpeg
-    p = insert(request.payload)
-  }
-
-  p.then((x) => reply.redirect('/' + x[0].id))
-    .catch((err) => reply.boom(err.statusCode, err))
-}
-
-
 exports.register = (server, options, next) => {
-/*
-  server.route({
-    method: 'GET',
-    path: '/admin',
-    config: {
-      auth: { mode: 'required' },
-      // handler: { view: 'admin' }
-      handler: {
-        proxy: {
-          passThrough: true,
-          mapUri: mapper,
-          onResponse: responder
-        }
-      }
+  const dbUrl = url.resolve(options.db.url, options.db.name)
 
+  const mapper = (request, callback) => {
+    const it = [dbUrl]
+    let more
+    if (request.params.pathy && request.params.pathy !== 'admin' ) {
+      it.push(request.params.pathy)
+      more = ''
+    } else {
+      it.push('_all_docs')
+      more = '?include_docs=true'
     }
-  })
-*/
+    const dest = it.join('/') + more
+    callback(null, dest, { accept: 'application/json' })
+  }
+
+  const mapperImg = (request, callback) => callback(null, dbUrl + request.path)
+
+  const responder = (err, res, request, reply) => {
+    if (err) { return reply(err) } // FIXME: how to test?
+    if (res.statusCode >= 400) { return reply.boom(res.statusCode, new Error(res.statusMessage)) }
+    if (request.params.action && request.params.action !== 'edit') { return reply.notFound(request.params.action) }
+
+    const go = (err, payload) => {
+      if (err) { return reply(err) } // FIXME: how to test?
+      let tpl
+      let obj
+      if (payload._id) {
+        if (request.params.action) {
+          tpl = 'edit-doc'
+        } else {
+          tpl = 'doc'
+          payload.content = marked(payload.content)
+        }
+        if (!payload._attachments) { payload._attachments = [] }
+        obj = { doc: payload }
+      } else if (payload.rows) {
+        if (request.params.pathy) {
+          if (request.auth.isAuthenticated) {
+            tpl = 'admin'
+          } else {
+            // TODO: Show login form
+            return reply.unauthorized()
+          }
+        } else {
+          tpl = 'docs'
+        }
+        obj = {
+          docs: payload.rows.map((d) => {
+            if (d.doc.content) {
+              d.doc.content = marked(truncate(d.doc.content, options.teaser.length, { keepImageTag: true }))
+            }
+            if (!d.doc._attachments) { d.doc._attachments = [] }
+            return d.doc
+          })
+        }
+      } else {
+        return reply.notImplemented('What\'s that?', payload)
+      }
+      const etag = request.auth.credentials && request.auth.credentials.name
+        ? ('"' + res.headers.etag.slice(1, -1) + ':' + request.auth.credentials.name + '"')
+        : res.headers.etag
+      reply.view(tpl, obj).etag(etag)
+    }
+
+    Wreck.read(res, { json: true }, go)
+  }
+
+  const getDoc = function (request, reply) {
+    const db = nano({
+      url: dbUrl,
+      cookie: request.auth.credentials.cookie
+    })
+
+    const get = pify(db.get, { multiArgs: true })
+    get(request.params.pathy)
+      .then((x) => reply(x[0]))
+      .catch(reply)
+  }
+
+  const resize = (image, width, height) => sharp(image).resize(width, height).max().toBuffer()
+
+  const editDoc = function (request, reply) {
+    if (reserved.indexOf(request.payload.id) !== -1) { return reply.forbidden('The provided field "id" is unacceptable.', { reserved: reserved }) }
+    request.payload._id = request.payload.id
+    delete request.payload.id
+
+    if (request.payload.rev) {
+      request.payload._rev = request.payload.rev
+      delete request.payload.rev
+    }
+
+    const db = nano({ url: dbUrl, cookie: request.auth.credentials.cookie })
+    const insert = pify(
+      (request.payload.jpeg && request.payload.jpeg.length)
+        ? db.multipart.insert
+        : db.insert,
+      { multiArgs: true }
+    )
+
+    let p
+    if (request.payload.jpeg && request.payload.jpeg.length) {
+      p = sharp(request.payload.jpeg).metadata()
+        .then((m) => Promise.all([
+          request.payload.jpeg,
+          resize(request.payload.jpeg, 160, 90),
+          resize(request.payload.jpeg, 320, 180),
+          resize(request.payload.jpeg, 800, 450),
+          resize(request.payload.jpeg, 1280, 720),
+          m.format
+        ]))
+        .then((stuff) => {
+          const format = stuff.pop()
+          delete request.payload.jpeg
+
+          return stuff.map((im, n) => {
+            return {
+              name: `top-image${n ? ('-' + n) : ''}.${format}`,
+              data: im,
+              content_type: 'image/' + format
+            }
+          })
+        })
+        .then((atts) => insert(request.payload, atts, request.payload._id))
+    } else {
+      if (request.pre && request.pre.m1 && request.pre.m1._attachments) {
+        request.payload._attachments = request.pre.m1._attachments
+      }
+      delete request.payload.jpeg
+      p = insert(request.payload)
+    }
+
+    p.then((x) => reply.redirect('/' + x[0].id))
+      .catch((err) => reply.boom(err.statusCode, err))
+  }
 
   server.route({
     method: 'GET',
@@ -296,6 +277,7 @@ exports.register = (server, options, next) => {
     }
   })
 
+  console.log(`CouchDB: ${dbUrl}`)
   next()
 }
 
