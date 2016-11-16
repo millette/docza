@@ -17,18 +17,14 @@ exports.register = (server, options, next) => {
   const dbUrl = url.resolve(options.db.url, options.db.name)
 
   const menu = function (request, reply) {
-    // reply(['menu', 'a', 'b', 'c'])
     const db = nano({
       url: dbUrl,
       cookie: request.auth.credentials.cookie
     })
 
     const view = pify(db.view, { multiArgs: true })
-    //reply(view('_design/app', 'menu'))
     view('app', 'menu')
-      .then((x) => {
-        reply(x[0])
-      })
+      .then((x) => reply(x[0]))
       .catch((e) => {
         console.log('EEEEE:', e)
         reply(e)
@@ -38,18 +34,14 @@ exports.register = (server, options, next) => {
 
   const mapper = (request, callback) => {
     const it = [dbUrl]
-    let more
+    let dest
     if (request.params.pathy && request.params.pathy !== 'admin' ) {
       it.push(request.params.pathy)
-      more = ''
+      dest = it.join('/')
     } else {
-      // it.push('_all_docs')
-      // more = '?include_docs=true&startkey="_\\ufff0"'
       it.push('_design/app/_view/menu')
-      more = '?include_docs=true'
+      dest = it.join('/') + '?include_docs=true'
     }
-    const dest = it.join('/') + more
-    console.log('DEST:', dest)
     callback(null, dest, { accept: 'application/json' })
   }
 
