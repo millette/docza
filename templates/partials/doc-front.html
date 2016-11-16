@@ -5,7 +5,7 @@
   <% } else if (data.doc._attachments['top-image-3.png']) { %>
     <img src="/<%- data.doc._id %>/top-image-3.png" alt="<%- data.doc.title || data.doc._id %>">
   <% } else { %>
-    <p>Pas d'image...</p>
+    <%- data.doc.title || data.doc._id %>
   <% } %>
   </a>
 </div>
