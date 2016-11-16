@@ -17,10 +17,8 @@ exports.register = (server, options, next) => {
   const dbUrl = url.resolve(options.db.url, options.db.name)
 
   const menu = function (request, reply) {
-    const db = nano({
-      url: dbUrl,
-      cookie: request.auth.credentials.cookie
-    })
+    const db = nano({ url: dbUrl })
+    if (request.auth.credentials && request.auth.credentials.cookie) { db.cookie = request.auth.credentials.cookie }
 
     const view = pify(db.view, { multiArgs: true })
     view('app', 'menu')
@@ -67,12 +65,15 @@ exports.register = (server, options, next) => {
         obj = { menu: request.pre.menu, doc: payload }
       } else if (payload.rows) {
         if (request.params.pathy) {
+          tpl = 'admin'
+          /*
           if (request.auth.isAuthenticated) {
             tpl = 'admin'
           } else {
             // TODO: Show login form
             return reply.unauthorized()
           }
+          */
         } else {
           tpl = 'docs'
         }
@@ -89,7 +90,7 @@ exports.register = (server, options, next) => {
       } else {
         return reply.notImplemented('What\'s that?', payload)
       }
-      const etag = request.auth.credentials && request.auth.credentials.name
+      const etag = request.auth && request.auth.credentials && request.auth.credentials.name
         ? ('"' + res.headers.etag.slice(1, -1) + ':' + request.auth.credentials.name + '"')
         : res.headers.etag
       reply.view(tpl, obj).etag(etag)
@@ -99,10 +100,8 @@ exports.register = (server, options, next) => {
   }
 
   const getDoc = function (request, reply) {
-    const db = nano({
-      url: dbUrl,
-      cookie: request.auth.credentials.cookie
-    })
+    const db = nano({ url: dbUrl })
+    if (request.auth.credentials && request.auth.credentials.cookie) { db.cookie = request.auth.credentials.cookie }
 
     const get = pify(db.get, { multiArgs: true })
     get(request.params.pathy)
@@ -123,6 +122,7 @@ exports.register = (server, options, next) => {
     }
 
     const db = nano({ url: dbUrl, cookie: request.auth.credentials.cookie })
+
     const insert = pify(
       (request.payload.jpeg && request.payload.jpeg.length)
         ? db.multipart.insert
