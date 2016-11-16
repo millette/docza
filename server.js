@@ -3,6 +3,11 @@
 // self
 const Config = require('./config')
 const Composer = require('./index')
+const ddocManager = require('./ddoc/index')
+
+ddocManager(Config)
+  .then((resp) => console.log('Pushing:', resp))
+  .catch((err) => console.log('Push error:', err))
 
 Composer((err, server) => {
   if (err) { throw err }
