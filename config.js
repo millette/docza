@@ -15,7 +15,12 @@ const config = {
   $meta: 'This file configures GlassJaw.',
   projectName: 'docza',
   app: { siteTitle: process.env.SITETITLE },
-  db: { url: process.env.DBURL, name: process.env.DBNAME },
+  db: {
+    url: process.env.DBURL,
+    name: process.env.DBNAME,
+    admin: process.env.DBADMIN,
+    password: process.env.DBPASSWORD
+  },
   cookie: {
     password: 'password-should-be-32-characters',
     secure: defFalse

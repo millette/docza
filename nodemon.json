@@ -1,4 +1,5 @@
 {
-  "ignore": ["locales/*", "templates/*.html"],
-  "ext": "js,json,html"
+  "ignore": ["app", "templates/*.html"],
+  "ext": "js,json,html",
+  "delay": 1500
 }
