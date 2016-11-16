@@ -14,14 +14,24 @@ const marked = require('marked')
 // core
 const url = require('url')
 
-const reserved = ['new', 'user', 'css', 'js', 'img']
+const reserved = ['admin', 'new', 'user', 'css', 'js', 'img']
 
 const dbUrl = url.resolve(Config.get('/db/url'), Config.get('/db/name'))
 
 const mapper = (request, callback) => {
   const it = [dbUrl]
-  it.push(request.params.pathy ? request.params.pathy : '_all_docs')
-  callback(null, it.join('/') + '?include_docs=true', { accept: 'application/json' })
+  let more
+  if (request.params.pathy && request.params.pathy !== 'admin' ) {
+    it.push(request.params.pathy)
+    more = ''
+  } else {
+    it.push('_all_docs')
+    more = '?include_docs=true'
+  }
+  const dest = it.join('/') + more
+  callback(null, dest, { accept: 'application/json' })
+  // it.push(request.params.pathy ? request.params.pathy : '_all_docs')
+  // callback(null, it.join('/') , { accept: 'application/json' })
 }
 
 const mapperImg = (request, callback) => callback(null, dbUrl + request.path)
@@ -45,7 +55,8 @@ const responder = (err, res, request, reply) => {
       if (!payload._attachments) { payload._attachments = [] }
       obj = { doc: payload }
     } else if (payload.rows) {
-      tpl = 'docs'
+      // tpl = request.params.pathy ? 'admin' : 'docs'
+      tpl = request.params.pathy ? 'admin' : 'docs'
       obj = {
         docs: payload.rows.map((d) => {
           if (d.doc.content) {
@@ -137,6 +148,25 @@ const editDoc = function (request, reply) {
 
 
 exports.register = (server, options, next) => {
+/*
+  server.route({
+    method: 'GET',
+    path: '/admin',
+    config: {
+      auth: { mode: 'required' },
+      // handler: { view: 'admin' }
+      handler: {
+        proxy: {
+          passThrough: true,
+          mapUri: mapper,
+          onResponse: responder
+        }
+      }
+
+    }
+  })
+*/
+
   server.route({
     method: 'GET',
     path: '/new',
