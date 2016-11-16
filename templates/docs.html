@@ -1,5 +1,5 @@
 <%= partials.head(data) %>
-<div class="row">
+<div class="row collapse">
 <% _(data.docs).each((doc, i) => { %>
 <%= partials['doc-front']({ edit: data.credentials && true, doc: doc, i: i }) %>
 <% }) %>
