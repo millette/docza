@@ -28,6 +28,7 @@
           <nav aria-label="You are here:" role="navigation">
             <ul class="breadcrumbs">
               <li><a href="/">Accueil</a></li>
+              <li>
                 <span class="show-for-sr">Current: </span><%- data.doc.title || data.doc._id %>
               </li>
             </ul>
@@ -35,4 +36,4 @@
         <% } else { %>
           <h1>Accueil</h1>
         <% } %>
-      
+
