@@ -1,7 +1,8 @@
 <%= partials.head(data) %>
-<h2>Les docs</h2>
+<div class="row">
 <% _(data.docs).each((doc, i) => { %>
 <%= partials['doc-front']({ edit: data.credentials && true, doc: doc, i: i }) %>
 <% }) %>
+</div>
 <%= partials.login(data) %>
 <%= partials.foot(data) %>

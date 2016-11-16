@@ -55,8 +55,14 @@ const responder = (err, res, request, reply) => {
       if (!payload._attachments) { payload._attachments = [] }
       obj = { doc: payload }
     } else if (payload.rows) {
-      // tpl = request.params.pathy ? 'admin' : 'docs'
-      tpl = request.params.pathy ? 'admin' : 'docs'
+      if (request.params.pathy) {
+        if (!request.auth.isAuthenticated) {
+          return reply.unauthorized()
+        }
+        tpl = 'admin'
+      } else {
+        tpl = 'docs'
+      }
       obj = {
         docs: payload.rows.map((d) => {
           if (d.doc.content) {
