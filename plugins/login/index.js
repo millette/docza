@@ -111,8 +111,6 @@ exports.register = (server, options, next) => {
       .catch((err) => reply.boom(err.statusCode || 500, err))
   }
 
-
-
   server.ext('onPreResponse', (request, reply) => {
     if (request.response.variety === 'view') {
       request.response.source.context.pathparts = request.path.split('/').slice(1)
