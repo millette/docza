@@ -30,8 +30,6 @@ const mapper = (request, callback) => {
   }
   const dest = it.join('/') + more
   callback(null, dest, { accept: 'application/json' })
-  // it.push(request.params.pathy ? request.params.pathy : '_all_docs')
-  // callback(null, it.join('/') , { accept: 'application/json' })
 }
 
 const mapperImg = (request, callback) => callback(null, dbUrl + request.path)
@@ -56,9 +54,7 @@ const responder = (err, res, request, reply) => {
       obj = { doc: payload }
     } else if (payload.rows) {
       if (request.params.pathy) {
-        if (!request.auth.isAuthenticated) {
-          return reply.unauthorized()
-        }
+        if (!request.auth.isAuthenticated) { return reply.unauthorized() }
         tpl = 'admin'
       } else {
         tpl = 'docs'
