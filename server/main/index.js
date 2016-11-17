@@ -16,12 +16,6 @@ const reserved = ['contact', 'admin', 'new', 'user', 'css', 'js', 'img']
 exports.register = (server, options, next) => {
   const dbUrl = url.resolve(options.db.url, options.db.name)
 
-  const contact = function (request, reply) {
-    if (request.auth.credentials) { return reply.view('eliza', { menu: request.pre.menu }) }
-    if (request.method === 'get') { return reply.view('contact', { menu: request.pre.menu }) }
-    reply(request.payload)
-  }
-
   const menu = function (request, reply) {
     const db = nano({ url: dbUrl })
     if (request.auth.credentials && request.auth.credentials.cookie) { db.cookie = request.auth.credentials.cookie }
@@ -46,6 +40,24 @@ exports.register = (server, options, next) => {
         reply(e)
       })
 
+  }
+
+  const mapperContact = (request, callback) => {
+    if (request.auth.credentials) { return callback(new Error('ouch')) }
+    callback(null, dbUrl + '/_design/app/_update/comment', { accept: 'application/json' })
+  }
+
+  const responderContact = (err, res, request, reply) => {
+    const go = (err, payload) => {
+      if (err) { return reply(err) } // FIXME: how to test?
+      reply.view('10-4', { theMsg: 'oh well', payload: payload })
+    }
+    Wreck.read(res, { json: true }, go)
+  }
+
+  const contact = function (request, reply) {
+    if (request.auth.credentials) { return reply.view('eliza', { menu: request.pre.menu }) }
+    reply.view('contact', { menu: request.pre.menu })
   }
 
   const mapper = (request, callback) => {
@@ -192,9 +204,12 @@ exports.register = (server, options, next) => {
   server.route({
     method: 'POST',
     path: '/contact',
-    config: {
-      pre: [{ assign: 'menu', method: menu }],
-      handler: contact
+    handler: {
+      proxy: {
+        passThrough: true,
+        mapUri: mapperContact,
+        onResponse: responderContact
+      }
     }
   })
 
