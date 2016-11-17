@@ -14,7 +14,7 @@
       <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
         <ul class="vertical menu">
           <% _(data.menu).each((m) => { %>
-            <li><a href="<%- m.path %>"><%- m.title %></a></li>
+            <li<%= m.active ? ' class="active"' : '' %>><a href="<%- m.path %>"><%- m.title %></a></li>
           <% }) %>
         </ul>
       </div>
