@@ -32,6 +32,7 @@ exports.register = (server, options, next) => {
         const items = x[0].rows.map((r) => r.value)
         items.unshift({ path: '/', title: 'Accueil' })
         if (request.auth.credentials) { items.push({ path: '/admin', title: 'Admin' }) }
+        items.push({ path: '/contact', title: 'Contact' })
         return reply(items.map((item) => {
           item.active = item.path === request.path
           return item
