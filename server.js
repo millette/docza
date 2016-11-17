@@ -14,7 +14,6 @@ Composer((err, server) => {
 
   server.register(['inert', 'hapi-context-app', 'vision', 'hapi-error'].map((dep) => require(dep)), (err) => {
     if (err) { throw err }
-
     server.views({
       engines: { html: require('lodash-vision') },
       path: 'templates',

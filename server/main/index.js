@@ -11,10 +11,14 @@ const marked = require('marked')
 // core
 const url = require('url')
 
-const reserved = ['admin', 'new', 'user', 'css', 'js', 'img']
+const reserved = ['contact', 'admin', 'new', 'user', 'css', 'js', 'img']
 
 exports.register = (server, options, next) => {
   const dbUrl = url.resolve(options.db.url, options.db.name)
+
+  const contact = function (request, reply) {
+    reply.view('contact', { menu: request.pre.menu })
+  }
 
   const menu = function (request, reply) {
     const db = nano({ url: dbUrl })
@@ -23,9 +27,7 @@ exports.register = (server, options, next) => {
     const view = pify(db.view, { multiArgs: true })
     view('app', 'menu')
       .then((x) => {
-        const items = x[0].rows
-          .map((r) => r.value)
-
+        const items = x[0].rows.map((r) => r.value)
         items.unshift({ path: '/', title: 'Accueil' })
         if (request.auth.credentials) { items.push({ path: '/admin', title: 'Admin' }) }
         return reply(items.map((item) => {
@@ -171,6 +173,24 @@ exports.register = (server, options, next) => {
     p.then((x) => reply.redirect('/' + x[0].id))
       .catch((err) => reply.boom(err.statusCode, err))
   }
+
+  server.route({
+    method: 'GET',
+    path: '/contact',
+    config: {
+      pre: [{ assign: 'menu', method: menu }],
+      handler: contact
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: '/contact',
+    config: {
+      pre: [{ assign: 'menu', method: menu }],
+      handler: contact
+    }
+  })
 
   server.route({
     method: 'GET',
