@@ -22,7 +22,17 @@ exports.register = (server, options, next) => {
 
     const view = pify(db.view, { multiArgs: true })
     view('app', 'menu')
-      .then((x) => reply(x[0].rows.map((r) => r.value)))
+      .then((x) => {
+        const items = x[0].rows
+          .map((r) => r.value)
+
+        items.unshift({ path: '/', title: 'Accueil' })
+        if (request.auth.credentials) { items.push({ path: '/admin', title: 'Admin' }) }
+        return reply(items.map((item) => {
+          item.active = item.path === request.path
+          return item
+        }))
+      })
       .catch((e) => {
         console.log('EEEEE:', e)
         reply(e)
