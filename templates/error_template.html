@@ -4,6 +4,9 @@
     <div class="callout alert text-center">
       <h2><%- data.errorTitle %></h2>
       <p><%- data.errorMessage %> -- <%- data.statusCode %></p>
+      <% if (data.statusCode === 401) { %>
+        <p>Connectez-vous via la page <a href="/admin">admin</a> au besoin.</p>
+      <% } %>
     </div>
   </div>
 </div>
