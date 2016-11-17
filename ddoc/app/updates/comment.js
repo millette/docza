@@ -8,6 +8,6 @@ function (doc, req) {
   req.form.type = 'comment'
   return [req.form, {
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ msg: 'will eventually post', req: req, doc: req.form })
+    body: JSON.stringify({ msg: 'Doc created!', req: req, doc: req.form })
   }]
 }
