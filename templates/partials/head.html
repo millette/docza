@@ -13,8 +13,8 @@
     <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
       <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
         <ul class="vertical menu">
-          <% _(data.docs).each((doc) => { %>
-            <li><a href="/<%- doc._id %>"><%- doc.title %></a></li>
+          <% _(data.menu).each((m) => { %>
+            <li><a href="<%- m.path %>"><%- m.title %></a></li>
           <% }) %>
         </ul>
       </div>

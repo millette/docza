@@ -22,7 +22,7 @@ exports.register = (server, options, next) => {
 
     const view = pify(db.view, { multiArgs: true })
     view('app', 'menu')
-      .then((x) => reply(x[0]))
+      .then((x) => reply(x[0].rows.map((r) => r.value)))
       .catch((e) => {
         console.log('EEEEE:', e)
         reply(e)
