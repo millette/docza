@@ -8,7 +8,7 @@
   <form method="post" action="/user/login">
     <input type="text" name="name" placeholder="name" required>
     <input type="password" name="password" placeholder="password" required>
-    <input type="hidden" name="next" value="/<%- data.pathparts.join('/') %>">
+    <input type="hidden" name="next" value="/<%- data[data.next ? 'next' : 'pathparts'].join('/') %>">
     <input class="button secondary" type="submit" value="Login">
   </form>
 </div>

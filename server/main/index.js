@@ -62,6 +62,7 @@ exports.register = (server, options, next) => {
 
     const go = (err, payload) => {
       if (err) { return reply(err) } // FIXME: how to test?
+
       let tpl
       let obj
       if (payload._id) {
@@ -74,19 +75,6 @@ exports.register = (server, options, next) => {
         if (!payload._attachments) { payload._attachments = [] }
         obj = { menu: request.pre.menu, doc: payload }
       } else if (payload.rows) {
-        if (request.params.pathy) {
-          tpl = 'admin'
-          /*
-          if (request.auth.isAuthenticated) {
-            tpl = 'admin'
-          } else {
-            // TODO: Show login form
-            return reply.unauthorized()
-          }
-          */
-        } else {
-          tpl = 'docs'
-        }
         obj = {
           menu: request.pre.menu,
           docs: payload.rows.map((d) => {
@@ -96,6 +84,14 @@ exports.register = (server, options, next) => {
             if (!d.doc._attachments) { d.doc._attachments = [] }
             return d.doc
           })
+        }
+        if (request.params.pathy) {
+          tpl = 'admin'
+          if (request.query.next) {
+            obj.next = request.query.next.slice(1).split('/')
+          }
+        } else {
+          tpl = 'docs'
         }
       } else {
         return reply.notImplemented('What\'s that?', payload)

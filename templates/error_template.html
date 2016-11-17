@@ -5,8 +5,9 @@
       <h2><%- data.errorTitle %></h2>
       <p><%- data.errorMessage %> -- <%- data.statusCode %></p>
       <% if (data.statusCode === 401) { %>
-        <p>Connectez-vous via la page <a href="/admin">admin</a> au besoin.</p>
+        <p>Connectez-vous via la page <a href="/admin?next=<%- data.url %>">admin</a> au besoin.</p>
       <% } %>
+      <p>Allez à la page <a href="/">d'accueil</a>.</p>
     </div>
   </div>
 </div>
