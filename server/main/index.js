@@ -17,7 +17,9 @@ exports.register = (server, options, next) => {
   const dbUrl = url.resolve(options.db.url, options.db.name)
 
   const contact = function (request, reply) {
-    reply.view('contact', { menu: request.pre.menu })
+    if (request.auth.credentials) { return reply.view('eliza', { menu: request.pre.menu }) }
+    if (request.method === 'get') { return reply.view('contact', { menu: request.pre.menu }) }
+    reply(request.payload)
   }
 
   const menu = function (request, reply) {
@@ -211,6 +213,7 @@ exports.register = (server, options, next) => {
     method: 'POST',
     path: '/new',
     config: {
+      // payload: { maxBytes: 1e7 },
       auth: { mode: 'required' },
       handler: editDoc
     }
@@ -321,6 +324,7 @@ exports.register = (server, options, next) => {
     method: 'POST',
     path: '/{pathy}/{action}',
     config: {
+      // payload: { maxBytes: 1e7 },
       pre: [ { method: getDoc, assign: 'm1' } ],
       auth: { mode: 'required' },
       handler: editDoc
