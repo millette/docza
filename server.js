@@ -5,18 +5,10 @@ const Config = require('./config')
 const Composer = require('./index')
 const ddocManager = require('./ddoc/index')
 
-// FIXME: Not actually watching
-// see https://github.com/jo/couchdb-push/blob/1e986ed36564cbd8ac1cc5d0f69e1d4064fa89a2/index.js#L162
-ddocManager(Config)
-  .then((resp) => console.log('Pushing:', resp))
-  .catch((err) => console.log('Push error:', err))
-
-/*
 ddocManager(Config, function (err, resp) {
   if (err) { console.log('Push error:', err) }
   console.log('Pushing:', resp)
 })
-*/
 
 Composer((err, server) => {
   if (err) { throw err }
