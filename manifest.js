@@ -45,6 +45,17 @@ const manifest = {
     { plugin: 'h2o2' },
     { plugin: 'inert' },
     { plugin: 'vision' },
+    {
+      plugin: {
+        register: 'hapijs-status-monitor',
+        options: {
+          title: 'Status monitor',
+          path: '/status',
+          // FIXME: Doesn't work, why?
+          routeConfig: { auth: { mode: 'required' } }
+        }
+      }
+    },
     { plugin: './server/web/index' },
     {
       plugin: {

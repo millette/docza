@@ -36,6 +36,7 @@
     "hapi-context-credentials": "^2.0.0",
     "hapi-error": "^1.5.0",
     "hapi-favicon": "^1.0.0",
+    "hapijs-status-monitor": "^0.4.0",
     "hoek": "4.x.x",
     "html-truncate": "^1.2.1",
     "inert": "^4.0.2",
