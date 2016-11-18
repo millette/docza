@@ -49,8 +49,10 @@ const manifest = {
       plugin: {
         register: 'hapijs-status-monitor',
         options: {
-          title: 'My Status Monitor',
-          routeConfig: { auth: true }
+          title: 'Status monitor',
+          path: '/status',
+          // FIXME: Doesn't work, why?
+          routeConfig: { auth: { mode: 'required' } }
         }
       }
     },
