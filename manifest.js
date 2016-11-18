@@ -45,6 +45,15 @@ const manifest = {
     { plugin: 'h2o2' },
     { plugin: 'inert' },
     { plugin: 'vision' },
+    {
+      plugin: {
+        register: 'hapijs-status-monitor',
+        options: {
+          title: 'My Status Monitor',
+          routeConfig: { auth: true }
+        }
+      }
+    },
     { plugin: './server/web/index' },
     {
       plugin: {
