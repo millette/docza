@@ -25,7 +25,7 @@
     "catbox-redis": "^2.0.2",
     "cloudant-nano": "^6.4.1",
     "confidence": "3.x.x",
-    "couchdb-push": "millette/couchdb-push#version",
+    "couchdb-push": "git+https://github.com/millette/couchdb-push#version",
     "dotenv-safe": "^3.0.0",
     "glue": "4.x.x",
     "h2o2": "AVVS/h2o2",
