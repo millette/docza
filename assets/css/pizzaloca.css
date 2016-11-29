@@ -9,14 +9,23 @@ button.menu-icon {
 
 #meNu h4 a {
   color: #fff;
+  font-size: 40px;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.1;
 }
 #meNu h4 a:hover,
 #meNu h4 a:focus {
   color: rgba(230,230,230,1);
 }
-
+#meNu .close-button {
+  left: 15px !important;
+}
+#meNu h4 {
+  margin-left: 80px;
+}
 .reveal {
-  background-color: #000;
+  background-color: rgba(0,0,0,.85);
 }
 
 .nopadding {
@@ -26,4 +35,5 @@ button.menu-icon {
 .help {
   margin-bottom: 20px;
 }
+
 
