@@ -15,6 +15,7 @@ dans Futon (interface CouchDB).
   <% if (data.doc && data.doc._rev) { %>
   <input type="hidden" name="rev" placeholder="rev" required value="<%- data.doc && data.doc._rev %>">
   <% } %>
+  <div class="help"><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Voir la documentation de la syntaxe MarkDown</a></div>
   <input type="text" name="main_image" placeholder="Image Principale" required value="<%- data.doc && data.doc.main_image || '' %>">
   <input type="text" name="menu_image" placeholder="Image du menu" required value="<%- data.doc && data.doc.menu_image || '' %>">
   <input type="text" name="menu_title" placeholder="Titre du menu" required value="<%- data.doc && data.doc.menu_title || '' %>">
