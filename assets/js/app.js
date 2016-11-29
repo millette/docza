@@ -1,5 +1,1 @@
-/* global $ */
-
-$(() => {
-  $(document).foundation()
-})
+$(document).foundation()

@@ -12,21 +12,20 @@
   <link rel="stylesheet" media="all" href="/css/app.css">
 </head>
 <body>
-  <div class="off-canvas-wrapper">
-    <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
-      <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
-        <ul class="vertical menu">
-          <% _(data.menu).each((m) => { %>
-            <li<%= m.active ? ' class="active"' : '' %>><a href="<%- m.path %>"><%- m.title %></a></li>
-          <% }) %>
-        </ul>
+  <div class="row expanded">
+    <div class="small-1 columns">
+      <button data-open="meNu" class="menu-icon"></button>
+      <div id="meNu" class="full reveal" data-reveal>
+            <% _(data.menu).each((m) => { %>
+              <h4<%= m.active ? ' class="active"' : '' %>><a href="<%- m.path %>"><%- m.title %></a></h4>
+            <% }) %>
+          <button class="close-button" data-close aria-label="Close menu" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
       </div>
-      <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
-        <!-- right off-canvas markup -->
-      </div>
-      <div class="off-canvas-content" data-off-canvas-content>
-        <div class="row expanded">
-        <button type="button" class="button" data-toggle="offCanvasLeft">Open Menu</button>
+    </div>
+    <div class="small-11 columns">
+      <div class="row expanded">
         <% if (data.doc && data.doc.title) { %>
           <h1><%- data.doc.title %></h1>
           <nav aria-label="You are here:" role="navigation">

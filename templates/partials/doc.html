@@ -1,9 +1,9 @@
 <% if (data.credentials || data.edit) { %>
 <p><a class="button hollow" href="/<%- data.doc._id %>/edit">edit</a></p>
 <% } %>
-<% if (data.doc._attachments['top-image-4.jpeg']) { %>
-  <img src="/<%- data.doc._id %>/top-image-4.jpeg">
-<% } else if (data.doc._attachments['top-image-4.png']) { %>
-  <img src="/<%- data.doc._id %>/top-image-4.png">
+<% if (data.doc._attachments['top-image-3.jpeg']) { %>
+  <img src="/<%- data.doc._id %>/top-image-3.jpeg">
+<% } else if (data.doc._attachments['top-image-3.png']) { %>
+  <img src="/<%- data.doc._id %>/top-image-3.png">
 <% } %>
 <%= data.doc.content %>
