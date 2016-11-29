@@ -1,3 +1,12 @@
+body > .row:first-of-type {
+  padding-left: 50px;
+}
+button.menu-icon {
+  position: absolute !important;
+  left: 15px;
+  top: 15px;
+}
+
 #meNu h4 a {
   color: #fff;
 }
@@ -13,3 +22,5 @@
 .nopadding {
   padding: 0 0 0 0 !important;
 }
+
+

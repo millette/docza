@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="row expanded">
-    <button data-open="meNu" class="menu-icon"></button>
+    <button data-open="meNu" class="menu-icon dark"></button>
     <div id="meNu" class="full reveal" data-reveal>
           <% _(data.menu).each((m) => { %>
             <h4<%= m.active ? ' class="active"' : '' %>><a href="<%- m.path %>"><%- m.title %></a></h4>
