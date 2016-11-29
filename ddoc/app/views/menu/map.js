@@ -1,4 +1,5 @@
 function(doc) {
+  if (doc.hidden) { return }
   const obj = { path: '/' + doc._id }
   const weight = doc.weight ? parseInt(doc.weight, 10) : 999
   if (doc.menu_title) {
