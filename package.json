@@ -35,27 +35,27 @@
     "hapi-context-app": "^0.2.1",
     "hapi-context-credentials": "^2.0.0",
     "hapi-couchdb-login": "^0.1.0",
-    "hapi-error": "^1.5.0",
+    "hapi-error": "^1.6.0",
     "hapi-favicon": "^1.0.0",
     "hapijs-status-monitor": "^0.4.0",
     "hoek": "4.x.x",
     "html-truncate": "^1.2.1",
-    "inert": "^4.0.2",
+    "inert": "^4.0.3",
     "lodash": "^4.16.6",
     "lodash-vision": "^0.0.1",
     "marked": "^0.3.6",
     "pify": "^2.3.0",
     "sharp": "^0.16.2",
-    "vision": "4.x.x",
+    "vision": "^4.1.1",
     "wreck": "^10.0.0"
   },
   "devDependencies": {
     "code": "4.x.x",
-    "eslint": "^3.9.1",
+    "eslint": "^3.11.1",
     "eslint-plugin-json": "^1.2.0",
     "lab": "11.x.x",
     "nodemon": "1.x.x",
-    "standard": "^8.5.0"
+    "standard": "^8.6.0"
   },
   "eslintConfig": {
     "plugins": [
