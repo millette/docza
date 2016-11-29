@@ -1,5 +1,5 @@
 <% if (data.doc) { %>
-<p class="lead"><strong>ATTENTION</strong>: Éditer un document avec cette interface
+<p class="lead label alert"><strong>ATTENTION</strong>: Éditer un document avec cette interface
 va oblitérer tous les autres champs du document si vous l'avez créé directement
 dans Futon (interface CouchDB).
 </p>
@@ -30,5 +30,6 @@ dans Futon (interface CouchDB).
 <% } %>
   <input type="file" name="jpeg">
   </label>
-  <input class="button secondary" type="submit" value="<%- (data.doc && data.doc._rev) ? 'Éditer' : 'Créer' %>">
+  <input class="button primary" type="submit" value="<%- (data.doc && data.doc._rev) ? 'Éditer' : 'Créer' %>">
+  <a class="button secondary" href="/<%- (data.doc && data.doc._id) ? data.doc._id : '' %>"><%- (data.doc && data.doc._id) ? 'Annuler' : 'Retour à l\'Accueil' %></a>
 </form>
