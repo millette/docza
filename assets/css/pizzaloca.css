@@ -1,0 +1,15 @@
+#meNu h4 a {
+  color: #fff;
+}
+#meNu h4 a:hover,
+#meNu h4 a:focus {
+  color: rgba(230,230,230,1);
+}
+
+.reveal {
+  background-color: #000;
+}
+
+.nopadding {
+  padding: 0 0 0 0 !important;
+}

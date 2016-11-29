@@ -10,33 +10,30 @@
   </title>
   <link rel="stylesheet" media="all" href="/css/foundation.css">
   <link rel="stylesheet" media="all" href="/css/app.css">
+  <link rel="stylesheet" media="all" href="/css/pizzaloca.css">
 </head>
 <body>
-  <div class="row expanded">
-    <div class="small-1 columns">
-      <button data-open="meNu" class="menu-icon"></button>
-      <div id="meNu" class="full reveal" data-reveal>
-            <% _(data.menu).each((m) => { %>
-              <h4<%= m.active ? ' class="active"' : '' %>><a href="<%- m.path %>"><%- m.title %></a></h4>
-            <% }) %>
-          <button class="close-button" data-close aria-label="Close menu" type="button">
-            <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
+<div class="row expanded">
+    <button data-open="meNu" class="menu-icon"></button>
+    <div id="meNu" class="full reveal" data-reveal>
+          <% _(data.menu).each((m) => { %>
+            <h4<%= m.active ? ' class="active"' : '' %>><a href="<%- m.path %>"><%- m.title %></a></h4>
+          <% }) %>
+        <button class="close-button" data-close aria-label="Close menu" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <div class="small-11 columns">
-      <div class="row expanded">
-        <% if (data.doc && data.doc.title) { %>
-          <h1><%- data.doc.title %></h1>
-          <nav aria-label="You are here:" role="navigation">
-            <ul class="breadcrumbs">
-              <li><a href="/">Accueil</a></li>
-              <li>
-                <span class="show-for-sr">Current: </span><%- data.doc.title || data.doc._id %>
-              </li>
-            </ul>
-          </nav>
-        <% } else { %>
-          <h1><%- data && data.app && data.app.siteTitle %></h1>
-        <% } %>
+    <% if (data.doc && data.doc.title) { %>
+      <h1><%- data.doc.title %></h1>
+      <nav aria-label="You are here:" role="navigation">
+        <ul class="breadcrumbs">
+          <li><a href="/">Accueil</a></li>
+          <li>
+            <span class="show-for-sr">Current: </span><%- data.doc.title || data.doc._id %>
+          </li>
+        </ul>
+      </nav>
+    <% } else { %>
+      <h1><%- data && data.app && data.app.siteTitle %></h1>
+    <% } %>
 
