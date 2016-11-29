@@ -24,14 +24,14 @@ const manifest = {
         options: {
           db: {
             url: Config.get('/db/url'),
-            name: Config.get('/db/name')
           },
           cookie: {
             password: Config.get('/cookie/password'),
             secure: Config.get('/cookie/secure')
           }
         },
-        register: './plugins/login/index'
+        register: 'hapi-couchdb-login'
+        // register: './plugins/login/index'
       },
       options: { routes: { prefix: '/user' } }
     },
